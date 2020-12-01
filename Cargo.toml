@@ -1,0 +1,8 @@
+[package]
+name = "aoc2020"
+version = "0.1.0"
+authors = ["Arnavion <me@arnavion.dev>"]
+edition = "2018"
+
+[dependencies]
+backtrace = "0.3"
