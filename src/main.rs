@@ -40,9 +40,9 @@ macro_rules! main {
 }
 
 main! {
+	day1,
 }
 
-#[allow(unused)]
 fn read_input_lines<T>(filename: &str) -> Result<impl Iterator<Item = Result<T, Error>>, Error> where T: std::str::FromStr, <T as std::str::FromStr>::Err: Into<Error> {
 	let mut path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).to_owned();
 	path.push("inputs");
