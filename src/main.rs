@@ -40,6 +40,7 @@ macro_rules! main {
 }
 
 main! {
+	day6,
 	day5,
 	day4,
 	day3,
