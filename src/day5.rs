@@ -56,27 +56,17 @@ pub(super) fn run() -> Result<(), super::Error> {
 }
 
 fn find_seat(pass: &str) -> Result<(usize, usize), super::Error> {
-	let mut row_num = 0..128;
-	for c in pass.get(..7).ok_or_else(|| format!("malformed pass {:?}", pass))?.chars() {
-		row_num = partition(row_num, c);
-	}
-	let row_num = row_num.start;
+	let seat_id: Result<usize, super::Error> =
+		pass.chars().try_fold(0, |row_num, c| match c {
+			'F' | 'L' => Ok(row_num * 2),
+			'B' | 'R' => Ok(row_num * 2 + 1),
+			_ => Err(format!("malformed pass {:?}", pass).into()),
+		});
+	let seat_id = seat_id?;
 
-	let mut seat_num = 0..8;
-	for c in pass.get(7..10).ok_or_else(|| format!("malformed pass {:?}", pass))?.chars() {
-		seat_num = partition(seat_num, c);
-	}
-	let seat_num = seat_num.start;
-
+	let row_num = seat_id / 8;
+	let seat_num = seat_id % 8;
 	Ok((row_num, seat_num))
-}
-
-fn partition(std::ops::Range { start, end }: std::ops::Range<usize>, c: char) -> std::ops::Range<usize> {
-	match c {
-		'F' | 'L' => std::ops::Range { start, end: (start + end) / 2 },
-		'B' | 'R' => std::ops::Range { start: (start + end) / 2, end },
-		_ => unreachable!(),
-	}
 }
 
 fn seat_id(row_num: usize, seat_num: usize) -> usize {
