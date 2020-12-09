@@ -3,6 +3,7 @@
 #![allow(
 	clippy::default_trait_access,
 	clippy::naive_bytecount,
+	clippy::similar_names,
 	clippy::too_many_arguments,
 	clippy::too_many_lines,
 	clippy::type_complexity,
@@ -40,6 +41,7 @@ macro_rules! main {
 }
 
 main! {
+	day9,
 	day8,
 	day7,
 	day6,
