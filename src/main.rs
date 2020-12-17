@@ -2,6 +2,7 @@
 #![deny(clippy::all, clippy::pedantic)]
 #![allow(
 	clippy::default_trait_access,
+	clippy::let_and_return,
 	clippy::naive_bytecount,
 	clippy::similar_names,
 	clippy::too_many_arguments,
@@ -41,6 +42,7 @@ macro_rules! main {
 }
 
 main! {
+	day17,
 	day16,
 	day15,
 	day14,
