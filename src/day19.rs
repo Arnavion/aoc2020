@@ -54,7 +54,7 @@ impl Rule<'_> {
 			let line = line?;
 			let line = line.as_ref();
 
-			if line == "" {
+			if line.is_empty() {
 				return Ok(rules);
 			}
 

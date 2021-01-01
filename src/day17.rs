@@ -96,7 +96,7 @@ impl Grid {
 		let block_index = index / std::mem::size_of::<BitSetBlock>();
 		let bit_index = index % std::mem::size_of::<BitSetBlock>();
 		let block = *self.inner.get_unchecked(block_index);
-		let bit = block & ((1 as BitSetBlock) << bit_index);
+		let bit = block & (1 << bit_index);
 		bit != 0
 	}
 
@@ -105,12 +105,12 @@ impl Grid {
 		let bit_index = index % std::mem::size_of::<BitSetBlock>();
 		let block = self.inner.get_unchecked_mut(block_index);
 		if value {
-			*block |= (1 as BitSetBlock) << bit_index;
+			*block |= 1 << bit_index;
 		}
 		else {
 			#[allow(clippy::cast_possible_truncation)] // `bit_index as u32` is fine because `bit_index < size_of::<BitSetBlock>()`
 			{
-				*block &= !((1 as BitSetBlock) << bit_index);
+				*block &= !(1 << bit_index);
 			}
 		}
 	}

@@ -94,7 +94,7 @@ impl Passport {
 			{
 				let byr = byr.as_deref()?;
 				let byr: u16 = byr.parse().ok()?;
-				if byr < 1920 || byr > 2002 {
+				if !(1920..=2002).contains(&byr) {
 					return None;
 				}
 			}
@@ -109,7 +109,7 @@ impl Passport {
 			{
 				let eyr = eyr.as_deref()?;
 				let eyr: u16 = eyr.parse().ok()?;
-				if eyr < 2020 || eyr > 2030 {
+				if !(2020..=2030).contains(&eyr) {
 					return None;
 				}
 			}
@@ -122,7 +122,7 @@ impl Passport {
 				}
 				for _ in 0..6 {
 					let c = hcl.next()?;
-					if (c < '0' || c > '9') && (c < 'a' || c > 'f') {
+					if !('0'..='9').contains(&c) && !('a'..='f').contains(&c) {
 						return None;
 					}
 				}
@@ -135,13 +135,13 @@ impl Passport {
 				let hgt = hgt.as_deref()?;
 				if let Some(hgt) = hgt.strip_suffix("cm") {
 					let hgt: u8 = hgt.parse().ok()?;
-					if hgt < 150 || hgt > 193 {
+					if !(150..=193).contains(&hgt) {
 						return None;
 					}
 				}
 				else if let Some(hgt) = hgt.strip_suffix("in") {
 					let hgt: u8 = hgt.parse().ok()?;
-					if hgt < 59 || hgt > 76 {
+					if !(59..=76).contains(&hgt) {
 						return None;
 					}
 				}
@@ -153,7 +153,7 @@ impl Passport {
 			{
 				let iyr = iyr.as_deref()?;
 				let iyr: u16 = iyr.parse().ok()?;
-				if iyr < 2010 || iyr > 2020 {
+				if !(2010..=2020).contains(&iyr) {
 					return None;
 				}
 			}
@@ -163,7 +163,7 @@ impl Passport {
 				let mut pid = pid.chars();
 				for _ in 0..9 {
 					let c = pid.next()?;
-					if c < '0' || c > '9' {
+					if !('0'..='9').contains(&c) {
 						return None;
 					}
 				}
