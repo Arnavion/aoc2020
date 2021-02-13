@@ -15,13 +15,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 			.flat_map(|(row_num, row)| {
 				row.iter()
 				.enumerate()
-				.filter_map(move |(seat_num, &occupied)|
-					if occupied {
-						Some(seat_id(row_num, seat_num))
-					}
-					else {
-						None
-					})
+				.filter_map(move |(seat_num, &occupied)| occupied.then(|| seat_id(row_num, seat_num)))
 			})
 			.max()
 			.ok_or("no solution")?;

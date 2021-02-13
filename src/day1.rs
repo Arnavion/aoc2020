@@ -64,12 +64,7 @@ mod typenum {
 
 impl Find for typenum::U0 {
 	fn find(_input: &'_ [u64], target: u64) -> Option<u64> {
-		if target == 0 {
-			Some(1)
-		}
-		else {
-			None
-		}
+		(target == 0).then(|| 1)
 	}
 }
 

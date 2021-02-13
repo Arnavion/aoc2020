@@ -190,7 +190,7 @@ fn solve(grid: &mut Grid, consider_w: bool) -> usize {
 			positions(Some((0, PUZZLE_MAX_X, i)))
 			.flat_map(|x| positions(Some((0, PUZZLE_MAX_Y, i))).map(move |y| (x, y)))
 			.flat_map(|(x, y)| positions(Some((0, PUZZLE_MAX_Z, i))).map(move |z| (x, y, z)))
-			.flat_map(|(x, y, z)| positions(if consider_w { Some((0, PUZZLE_MAX_W, i)) } else { None }).map(move |w| (x, y, z, w)))
+			.flat_map(|(x, y, z)| positions(consider_w.then(|| (0, PUZZLE_MAX_W, i))).map(move |w| (x, y, z, w)))
 			.map(Grid::position_to_index_base)
 			.filter_map(|base| {
 				let index = base + OFFSET;

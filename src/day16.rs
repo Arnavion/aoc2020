@@ -198,13 +198,7 @@ fn part2(input: &mut Input) -> Result<u64, super::Error> {
 
 	let result =
 		input.discover_fields()?
-		.filter_map(|(field_name, field)|
-			if field_name.starts_with("departure ") {
-				Some(field)
-			}
-			else {
-				None
-			})
+		.filter_map(|(field_name, field)| field_name.starts_with("departure ").then(|| field))
 		.product();
 	Ok(result)
 }

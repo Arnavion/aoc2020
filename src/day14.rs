@@ -111,7 +111,7 @@ impl Mask for Mask2 {
 			);
 		addresses.push_back(address);
 
-		for pos in self.floating_bits.iter().enumerate().filter_map(|(i, &bit)| if bit { Some(i) } else { None }) {
+		for pos in self.floating_bits.iter().enumerate().filter_map(|(i, &bit)| bit.then(|| i)) {
 			for i in 0..(addresses.len()) {
 				let mut address = addresses[i];
 

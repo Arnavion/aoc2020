@@ -167,13 +167,7 @@ fn matches2(message: &str, rules: &std::collections::BTreeMap<u16, Rule<'_>>) ->
 
 fn matches_inner(message: &str, rule: &Rule<'_>, rules: &std::collections::BTreeMap<u16, Rule<'_>>) -> Option<usize> {
 	match rule {
-		Rule::Str(s) =>
-			if message.starts_with(s) {
-				Some(s.len())
-			}
-			else {
-				None
-			},
+		Rule::Str(s) => message.starts_with(s).then(|| s.len()),
 
 		Rule::Alts(alts) => {
 			for alt in &**alts {

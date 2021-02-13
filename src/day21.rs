@@ -2,7 +2,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	let (recipes, allergenic_ingredients) = solve(super::read_input_lines::<String>("day21")?)?;
 
 	{
-		let result = part1(&recipes, &allergenic_ingredients)?;
+		let result = part1(&recipes, &allergenic_ingredients);
 
 		println!("21a: {}", result);
 
@@ -10,7 +10,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	}
 
 	{
-		let result = part2(&allergenic_ingredients)?;
+		let result = part2(&allergenic_ingredients);
 
 		println!("21b: {}", result);
 
@@ -96,7 +96,7 @@ fn solve(input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>) ->
 fn part1(
 	recipes: &[(std::collections::BTreeSet<String>, std::collections::BTreeSet<String>)],
 	allergenic_ingredients: &std::collections::BTreeMap<String, String>,
-) -> Result<usize, super::Error> {
+) -> usize {
 	let allergenic_ingredients: std::collections::BTreeSet<&str> = allergenic_ingredients.values().map(AsRef::as_ref).collect();
 
 	let num_occurrences_of_non_allergenic_ingredients =
@@ -105,10 +105,10 @@ fn part1(
 		.filter(|&ingredient| !allergenic_ingredients.contains(&**ingredient))
 		.count();
 
-	Ok(num_occurrences_of_non_allergenic_ingredients)
+	num_occurrences_of_non_allergenic_ingredients
 }
 
-fn part2(allergenic_ingredients: &std::collections::BTreeMap<String, String>) -> Result<String, super::Error> {
+fn part2(allergenic_ingredients: &std::collections::BTreeMap<String, String>) -> String {
 	let mut result = String::new();
 	for ingredient in allergenic_ingredients.values() {
 		if !result.is_empty() {
@@ -116,7 +116,7 @@ fn part2(allergenic_ingredients: &std::collections::BTreeMap<String, String>) ->
 		}
 		result.push_str(ingredient);
 	}
-	Ok(result)
+	result
 }
 
 #[cfg(test)]
@@ -131,12 +131,12 @@ sqjhc mxmxvkd sbzzf (contains fish)\
 	#[test]
 	fn part1() {
 		let (recipes, allergenic_ingredients) = super::solve(INPUT.split('\n').map(Ok)).unwrap();
-		assert_eq!(super::part1(&recipes, &allergenic_ingredients).unwrap(), 5);
+		assert_eq!(super::part1(&recipes, &allergenic_ingredients), 5);
 	}
 
 	#[test]
 	fn part2() {
 		let (_, allergenic_ingredients) = super::solve(INPUT.split('\n').map(Ok)).unwrap();
-		assert_eq!(super::part2(&allergenic_ingredients).unwrap(), "mxmxvkd,sqjhc,fvjkl");
+		assert_eq!(super::part2(&allergenic_ingredients), "mxmxvkd,sqjhc,fvjkl");
 	}
 }

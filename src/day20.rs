@@ -114,7 +114,7 @@ impl Input {
 
 		let corners: Vec<_> =
 			neighbor_ids.iter()
-			.filter_map(|(&id, neighbor_ids)| if neighbor_ids.len() == 2 { Some(id) } else { None })
+			.filter_map(|(&id, neighbor_ids)| (neighbor_ids.len() == 2).then(|| id))
 			.collect();
 		if corners.len() != 4 {
 			return Err(format!("expected four corners but found {:?}", corners).into());
@@ -202,14 +202,14 @@ fn part2(Input { tiles, neighbors, corners }: &Input) -> Result<usize, super::Er
 
 			let src = &tiles[&id];
 			let src = &[
-				&src[1][1..9],
-				&src[2][1..9],
-				&src[3][1..9],
-				&src[4][1..9],
-				&src[5][1..9],
-				&src[6][1..9],
-				&src[7][1..9],
-				&src[8][1..9],
+				&src[1][1..][..8],
+				&src[2][1..][..8],
+				&src[3][1..][..8],
+				&src[4][1..][..8],
+				&src[5][1..][..8],
+				&src[6][1..][..8],
+				&src[7][1..][..8],
+				&src[8][1..][..8],
 			];
 
 			let (row_0, rest) = merged_grid[(row * 8)..].split_first_mut().expect("must succeed");
@@ -221,14 +221,14 @@ fn part2(Input { tiles, neighbors, corners }: &Input) -> Result<usize, super::Er
 			let (row_6, rest) = rest.split_first_mut().expect("must succeed");
 			let (row_7, _) = rest.split_first_mut().expect("must succeed");
 			let dest = &mut [
-				&mut row_0[(col * 8)..(col * 8 + 8)],
-				&mut row_1[(col * 8)..(col * 8 + 8)],
-				&mut row_2[(col * 8)..(col * 8 + 8)],
-				&mut row_3[(col * 8)..(col * 8 + 8)],
-				&mut row_4[(col * 8)..(col * 8 + 8)],
-				&mut row_5[(col * 8)..(col * 8 + 8)],
-				&mut row_6[(col * 8)..(col * 8 + 8)],
-				&mut row_7[(col * 8)..(col * 8 + 8)],
+				&mut row_0[(col * 8)..][..8],
+				&mut row_1[(col * 8)..][..8],
+				&mut row_2[(col * 8)..][..8],
+				&mut row_3[(col * 8)..][..8],
+				&mut row_4[(col * 8)..][..8],
+				&mut row_5[(col * 8)..][..8],
+				&mut row_6[(col * 8)..][..8],
+				&mut row_7[(col * 8)..][..8],
 			];
 
 			op.transform(src, dest);
@@ -249,12 +249,7 @@ fn part2(Input { tiles, neighbors, corners }: &Input) -> Result<usize, super::Er
 				.filter(|&(row, col)| is_sea_monster(&transformed_grid, row, col))
 				.count();
 
-			if num_sea_monsters > 0 {
-				Some(transformed_grid.iter().flatten().filter(|&&value| value).count() - num_sea_monsters * 15)
-			}
-			else {
-				None
-			}
+			(num_sea_monsters > 0).then(|| transformed_grid.iter().flatten().filter(|&&value| value).count() - num_sea_monsters * 15)
 		})
 		.ok_or("no solution")?;
 	Ok(result)
