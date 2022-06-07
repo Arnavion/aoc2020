@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&input);
 
-		println!("20a: {}", result);
+		println!("20a: {result}");
 
 		assert_eq!(result, 1699 * 2137 * 2539 * 2549);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&input)?;
 
-		println!("20b: {}", result);
+		println!("20b: {result}");
 
 		assert_eq!(result, 2256);
 	}
@@ -58,8 +58,8 @@ impl Input {
 				}
 			}
 			else if let Some(suffix) = line.strip_prefix("Tile ") {
-				let num = suffix.strip_suffix(":").ok_or_else(|| format!("malformed input: line {:?} does not match tile ID line pattern", line))?;
-				let id = num.parse().map_err(|err| format!("expected tile number but got {:?}: {}", num, err))?;
+				let num = suffix.strip_suffix(':').ok_or_else(|| format!("malformed input: line {line:?} does not match tile ID line pattern"))?;
+				let id = num.parse().map_err(|err| format!("expected tile number but got {num:?}: {err}"))?;
 				id_tile_row = Some((id, [[false; 10]; 10], 0));
 			}
 			else {
@@ -117,7 +117,7 @@ impl Input {
 			.filter_map(|(&id, neighbor_ids)| (neighbor_ids.len() == 2).then(|| id))
 			.collect();
 		if corners.len() != 4 {
-			return Err(format!("expected four corners but found {:?}", corners).into());
+			return Err(format!("expected four corners but found {corners:?}").into());
 		}
 
 		let corners = [corners[0], corners[1], corners[2], corners[3]];
@@ -169,7 +169,7 @@ fn part2(Input { tiles, neighbors, corners }: &Input) -> Result<usize, super::Er
 	let &op_start =
 		ALL_OPS.iter()
 		.find(|&&op| matches!(neighbors.get(&(id_start, op)), Some([Some(_), Some(_)])))
-		.ok_or_else(|| format!("could not find neighbors of corner {}", id_start))?;
+		.ok_or_else(|| format!("could not find neighbors of corner {id_start}"))?;
 
 	let mut grid = Vec::with_capacity(tiles.len());
 
@@ -184,11 +184,11 @@ fn part2(Input { tiles, neighbors, corners }: &Input) -> Result<usize, super::Er
 			let value =
 				if col > 0 {
 					let (id1, op1) = grid[pos - 1];
-					neighbors[&(id1, op1)][0].ok_or_else(|| format!("could not find right neighbor of ({:?}){}", op1, id1))?
+					neighbors[&(id1, op1)][0].ok_or_else(|| format!("could not find right neighbor of ({op1:?}){id1}"))?
 				}
 				else {
 					let (id1, op1) = grid[pos - num_tiles_in_grid_side];
-					neighbors[&(id1, op1)][1].ok_or_else(|| format!("could not find down neighbor of ({:?}){}", op1, id1))?
+					neighbors[&(id1, op1)][1].ok_or_else(|| format!("could not find down neighbor of ({op1:?}){id1}"))?
 				};
 			grid.push(value);
 		}

@@ -2,7 +2,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	let part1_result = {
 		let result = part1(super::read_input_lines("day9")?, 25)?;
 
-		println!("9a: {}", result);
+		println!("9a: {result}");
 
 		assert_eq!(result, 530627549);
 
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(super::read_input_lines("day9")?, part1_result)?;
 
-		println!("9b: {}", result);
+		println!("9b: {result}");
 
 		assert_eq!(result, 77730285);
 	}

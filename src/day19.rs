@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 			}
 		}
 
-		println!("19a: {}", result);
+		println!("19a: {result}");
 
 		assert_eq!(result, 147);
 	}
@@ -32,7 +32,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 			}
 		}
 
-		println!("19b: {}", result);
+		println!("19b: {result}");
 
 		assert_eq!(result, 263);
 	}
@@ -60,12 +60,12 @@ impl Rule<'_> {
 
 			let mut parts = line.splitn(2, ": ");
 
-			let id = parts.next().expect("str::split yields at least one part").parse().map_err(|err| format!("malformed rule {:?}: {}", line, err))?;
+			let id = parts.next().expect("str::split yields at least one part").parse().map_err(|err| format!("malformed rule {line:?}: {err}"))?;
 
-			let value = parts.next().ok_or_else(|| format!("malformed rule {:?}", line))?;
+			let value = parts.next().ok_or_else(|| format!("malformed rule {line:?}"))?;
 			let rule =
-				if let Some(value) = value.strip_prefix(r#"""#) {
-					let value = value.strip_suffix(r#"""#).ok_or_else(|| format!("malformed rule {:?}", line))?;
+				if let Some(value) = value.strip_prefix('"') {
+					let value = value.strip_suffix('"').ok_or_else(|| format!("malformed rule {line:?}"))?;
 					Rule::Str(value.to_owned())
 				}
 				else {
@@ -78,7 +78,7 @@ impl Rule<'_> {
 							alt = vec![];
 						}
 						else {
-							let alt_id = s.parse().map_err(|err| format!("malformed rule {:?}: {}", line, err))?;
+							let alt_id = s.parse().map_err(|err| format!("malformed rule {line:?}: {err}"))?;
 							alt.push(alt_id);
 						}
 					}
@@ -96,7 +96,7 @@ impl Rule<'_> {
 		// matches2 only works if rule 0 is `8 | 11`
 		match &rules[&0] {
 			Rule::Alts(alts) if matches!(&**alts, [alt] if matches!(&**alt, &[8, 11])) => Ok(()),
-			rule => Err(format!("expected rule `0: 8 | 11` but it's {:?}", rule).into()),
+			rule => Err(format!("expected rule `0: 8 | 11` but it's {rule:?}").into()),
 		}
 	}
 }
@@ -210,7 +210,7 @@ mod tests {
 			"aab",
 			"aba",
 		] {
-			assert!(super::matches1(message, &rules), "{:?} should have parsed successfully", message);
+			assert!(super::matches1(message, &rules), "{message:?} should have parsed successfully");
 		}
 	}
 
@@ -236,7 +236,7 @@ mod tests {
 			"abaaab",
 			"ababbb",
 		] {
-			assert!(super::matches1(message, &rules), "{:?} should have parsed successfully", message);
+			assert!(super::matches1(message, &rules), "{message:?} should have parsed successfully");
 		}
 	}
 
@@ -283,7 +283,7 @@ mod tests {
 			"ababaaaaaabaaab",
 			"ababaaaaabbbaba",
 		] {
-			assert!(super::matches1(message, &rules), "{:?} should have parsed successfully", message);
+			assert!(super::matches1(message, &rules), "{message:?} should have parsed successfully");
 		}
 
 		for &message in &[
@@ -300,7 +300,7 @@ mod tests {
 			"babaaabbbaaabaababbaabababaaab",
 			"aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba",
 		] {
-			assert!(!super::matches1(message, &rules), "{:?} should not have parsed successfully", message);
+			assert!(!super::matches1(message, &rules), "{message:?} should not have parsed successfully");
 		}
 	}
 
@@ -323,7 +323,7 @@ mod tests {
 			"aaaabbaabbaaaaaaabbbabbbaaabbaabaaa",
 			"aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba",
 		] {
-			assert!(super::matches2(message, &rules), "{:?} should have parsed successfully", message);
+			assert!(super::matches2(message, &rules), "{message:?} should have parsed successfully");
 		}
 
 		for &message in &[
@@ -331,7 +331,7 @@ mod tests {
 			"aaaabbaaaabbaaa",
 			"babaaabbbaaabaababbaabababaaab",
 		] {
-			assert!(!super::matches1(message, &rules), "{:?} should not have parsed successfully", message);
+			assert!(!super::matches1(message, &rules), "{message:?} should not have parsed successfully");
 		}
 	}
 }

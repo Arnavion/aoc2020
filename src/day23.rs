@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&cups)?;
 
-		println!("23a: {}", result);
+		println!("23a: {result}");
 
 		assert_eq!(result, "52864379");
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&cups)?;
 
-		println!("23b: {}", result);
+		println!("23b: {result}");
 
 		assert_eq!(result, 11591415792);
 	}
@@ -27,7 +27,7 @@ fn parse(mut input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>)
 
 	let cups: Vec<_> =
 		line.chars()
-		.map(|c| c as usize - '0' as usize)
+		.map(|c| usize::try_from(u32::from(c)).unwrap() - usize::from(b'0'))
 		.collect();
 
 	{
@@ -48,7 +48,7 @@ fn part1(cups: &[usize]) -> Result<String, super::Error> {
 	let mut cup = right_neighbors[1];
 	while cup != 1 {
 		use std::fmt::Write;
-		write!(result, "{}", cup)?;
+		write!(result, "{cup}")?;
 		cup = right_neighbors[cup];
 	}
 

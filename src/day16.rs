@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&input);
 
-		println!("16a: {}", result);
+		println!("16a: {result}");
 
 		assert_eq!(result, 23115);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&mut input)?;
 
-		println!("16b: {}", result);
+		println!("16b: {result}");
 
 		assert_eq!(result, 239727793813);
 	}
@@ -58,12 +58,12 @@ impl Input {
 			match state {
 				State::Fields if line.is_empty() => { state = State::TicketPre; },
 				State::Fields => {
-					let captures = FIELDS_REGEX.captures(line).ok_or_else(|| format!("input fields line {:?} has invalid format", line))?;
+					let captures = FIELDS_REGEX.captures(line).ok_or_else(|| format!("input fields line {line:?} has invalid format"))?;
 					let name = &captures["name"];
-					let range1_low = captures["range1_low"].parse().map_err(|err| format!("input fields line {:?} has invalid format: {}", line, err))?;
-					let range1_high = captures["range1_high"].parse().map_err(|err| format!("input fields line {:?} has invalid format: {}", line, err))?;
-					let range2_low = captures["range2_low"].parse().map_err(|err| format!("input fields line {:?} has invalid format: {}", line, err))?;
-					let range2_high = captures["range2_high"].parse().map_err(|err| format!("input fields line {:?} has invalid format: {}", line, err))?;
+					let range1_low = captures["range1_low"].parse().map_err(|err| format!("input fields line {line:?} has invalid format: {err}"))?;
+					let range1_high = captures["range1_high"].parse().map_err(|err| format!("input fields line {line:?} has invalid format: {err}"))?;
+					let range2_low = captures["range2_low"].parse().map_err(|err| format!("input fields line {line:?} has invalid format: {err}"))?;
+					let range2_high = captures["range2_high"].parse().map_err(|err| format!("input fields line {line:?} has invalid format: {err}"))?;
 					result.fields.push((name.to_owned(), range1_low..=range1_high, range2_low..=range2_high));
 				},
 
@@ -72,7 +72,7 @@ impl Input {
 
 				State::Ticket => {
 					for part in line.split(',') {
-						result.ticket.push(part.parse().map_err(|err| format!("input fields line {:?} has invalid format: {}", line, err))?);
+						result.ticket.push(part.parse().map_err(|err| format!("input fields line {line:?} has invalid format: {err}"))?);
 					}
 					state = State::TicketPost;
 				},
@@ -87,7 +87,7 @@ impl Input {
 				State::NearbyTickets => {
 					let mut ticket = vec![];
 					for part in line.split(',') {
-						ticket.push(part.parse().map_err(|err| format!("input fields line {:?} has invalid format: {}", line, err))?);
+						ticket.push(part.parse().map_err(|err| format!("input fields line {line:?} has invalid format: {err}"))?);
 					}
 					result.nearby_tickets.push(ticket);
 				}
@@ -101,7 +101,7 @@ impl Input {
 		self.nearby_tickets =
 			std::mem::take(&mut self.nearby_tickets)
 			.into_iter()
-			.filter(|ticket| invalid_fields(&ticket, &self.fields).next().is_none())
+			.filter(|ticket| invalid_fields(ticket, &self.fields).next().is_none())
 			.collect();
 	}
 

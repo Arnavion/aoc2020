@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&instructions)?;
 
-		println!("8a: {}", result);
+		println!("8a: {result}");
 
 		assert_eq!(result, 1818);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&instructions)?;
 
-		println!("8b: {}", result);
+		println!("8b: {result}");
 
 		assert_eq!(result, 631);
 	}
@@ -32,7 +32,7 @@ fn parse_program(input: impl Iterator<Item = Result<Instruction, super::Error>>)
 }
 
 fn part1(instructions: &[Instruction]) -> Result<i64, super::Error> {
-	match boot(&instructions)? {
+	match boot(instructions)? {
 		BootResult::InfiniteLoop(acc) => Ok(acc),
 		BootResult::Finished(_) => Err("expected program to infinite loop but it finished".into()),
 	}
@@ -63,15 +63,15 @@ impl std::str::FromStr for Instruction {
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		let arg =
 			s.get(4..)
-			.ok_or_else(|| format!("invalid instruction {:?}: no arg", s))?
+			.ok_or_else(|| format!("invalid instruction {s:?}: no arg"))?
 			.parse()
-			.map_err(|err| format!("invalid instruction {:?}: {}", s, err))?;
+			.map_err(|err| format!("invalid instruction {s:?}: {err}"))?;
 
 		let instruction = match &s[..3] {
 			"jmp" => Instruction::Jmp(arg),
 			"acc" => Instruction::Acc(arg),
 			"nop" => Instruction::Nop(arg),
-			_ => return Err(format!("invalid instruction {:?}: unrecognized opcode", s).into()),
+			_ => return Err(format!("invalid instruction {s:?}: unrecognized opcode").into()),
 		};
 		Ok(instruction)
 	}
@@ -89,7 +89,7 @@ fn boot(instructions: &[Instruction]) -> Result<BootResult, super::Error> {
 		}
 
 		let instruction = {
-			let pc: usize = std::convert::TryInto::try_into(pc).map_err(|err| format!("pc out of range: {}", err))?;
+			let pc: usize = std::convert::TryInto::try_into(pc).map_err(|err| format!("pc out of range: {err}"))?;
 			instructions.get(pc).copied()
 		};
 		match instruction {

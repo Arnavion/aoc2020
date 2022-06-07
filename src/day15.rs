@@ -5,7 +5,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 		game.autoplay_to(2020);
 		let result = game.next_number;
 
-		println!("15a: {}", result);
+		println!("15a: {result}");
 
 		assert_eq!(result, 1009);
 	}
@@ -14,7 +14,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 		game.autoplay_to(30_000_000);
 		let result = game.next_number;
 
-		println!("15b: {}", result);
+		println!("15b: {result}");
 
 		assert_eq!(result, 62714);
 	}

@@ -6,7 +6,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 
 		let result = part1(&mut grid);
 
-		println!("17a: {}", result);
+		println!("17a: {result}");
 
 		assert_eq!(result, 267);
 	}
@@ -14,7 +14,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&mut grid);
 
-		println!("17b: {}", result);
+		println!("17b: {result}");
 
 		assert_eq!(result, 1812);
 	}
@@ -23,7 +23,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 }
 
 type BitSetBlock = u8; // Empirically determined to be very slightly faster than other u* for 17b: ~28ms for u8 vs ~32ms for u64
-const BITSET_NUM_BLOCKS: usize = (NUM_CUBES as usize + std::mem::size_of::<BitSetBlock>() - 1) / std::mem::size_of::<BitSetBlock>();
+const BITSET_NUM_BLOCKS: usize = (NUM_CUBES + std::mem::size_of::<BitSetBlock>() - 1) / std::mem::size_of::<BitSetBlock>();
 
 #[derive(Clone, Debug)]
 struct Grid {
@@ -74,8 +74,8 @@ impl Grid {
 			for (y, c) in line.chars().enumerate() {
 				if c == '#' {
 					let position = (
-						std::convert::TryInto::try_into(x).map_err(|err| format!("cell ({}, {}) is out of range: {}", x, y, err))?,
-						std::convert::TryInto::try_into(y).map_err(|err| format!("cell ({}, {}) is out of range: {}", x, y, err))?,
+						std::convert::TryInto::try_into(x).map_err(|err| format!("cell ({x}, {y}) is out of range: {err}"))?,
+						std::convert::TryInto::try_into(y).map_err(|err| format!("cell ({x}, {y}) is out of range: {err}"))?,
 						0,
 						0,
 					);
@@ -89,7 +89,7 @@ impl Grid {
 	}
 
 	fn num_active(&self) -> usize {
-		self.inner.iter().map(|&block| block.count_ones() as usize).sum()
+		self.inner.iter().map(|&block| usize::try_from(block.count_ones()).unwrap()).sum()
 	}
 
 	unsafe fn get_raw(&self, index: usize) -> bool {
@@ -108,10 +108,7 @@ impl Grid {
 			*block |= 1 << bit_index;
 		}
 		else {
-			#[allow(clippy::cast_possible_truncation)] // `bit_index as u32` is fine because `bit_index < size_of::<BitSetBlock>()`
-			{
-				*block &= !(1 << bit_index);
-			}
+			*block &= !(1 << bit_index);
 		}
 	}
 
@@ -173,7 +170,6 @@ fn solve(grid: &mut Grid, consider_w: bool) -> usize {
 	}
 
 	// Precompute all `position_to_index_base(x_, y_, z_, w_)`
-	#[allow(clippy::filter_map)] // "more succinctly" my ass.
 	let neighbors: Vec<_> =
 		(-1..=1)
 		.flat_map(|x| (-1..=1).map(move |y| (x, y)))
@@ -202,9 +198,8 @@ fn solve(grid: &mut Grid, consider_w: bool) -> usize {
 					.filter(|&&offset_| unsafe { grid.get_raw(index.wrapping_add(offset_)) })
 					.count();
 
-				#[allow(clippy::match_same_arms)]
 				match (cube, num_active_neighbors) {
-					(true, 2) | (true, 3) => None,
+					(true, 2 | 3) => None,
 					(true, _) => Some((index, false)),
 					(false, 3) => Some((index, true)),
 					(false, _) => None,

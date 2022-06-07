@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&actions);
 
-		println!("12a: {}", result);
+		println!("12a: {result}");
 
 		assert_eq!(result, 1152);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&actions);
 
-		println!("12b: {}", result);
+		println!("12b: {result}");
 
 		assert_eq!(result, 58637);
 	}
@@ -49,7 +49,7 @@ impl std::str::FromStr for Action {
 	type Err = super::Error;
 
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
-		let amount: i64 = s[1..].parse().map_err(|err| format!("invalid action {:?}: {}", s, err))?;
+		let amount: i64 = s[1..].parse().map_err(|err| format!("invalid action {s:?}: {err}"))?;
 
 		Ok(match &s[..1] {
 			"E" => Action::Translate(EAST * amount),
@@ -59,7 +59,7 @@ impl std::str::FromStr for Action {
 			"R" => Action::Rotate(num_traits::Pow::pow(&ROTATE_RIGHT, amount / 90)),
 			"S" => Action::Translate(SOUTH * amount),
 			"W" => Action::Translate(WEST * amount),
-			_ => return Err(format!("invalid action {:?}", s).into()),
+			_ => return Err(format!("invalid action {s:?}").into()),
 		})
 	}
 }

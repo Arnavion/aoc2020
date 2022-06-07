@@ -20,7 +20,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 			.max()
 			.ok_or("no solution")?;
 
-		println!("5a: {}", result);
+		println!("5a: {result}");
 
 		assert_eq!(result, 919);
 	}
@@ -41,7 +41,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 				})
 			.ok_or("no solution")?;
 
-		println!("5b: {}", result);
+		println!("5b: {result}");
 
 		assert_eq!(result, 642);
 	}
@@ -54,7 +54,7 @@ fn find_seat(pass: &str) -> Result<(usize, usize), super::Error> {
 		pass.chars().try_fold(0, |row_num, c| match c {
 			'F' | 'L' => Ok(row_num * 2),
 			'B' | 'R' => Ok(row_num * 2 + 1),
-			_ => Err(format!("malformed pass {:?}", pass).into()),
+			_ => Err(format!("malformed pass {pass:?}").into()),
 		});
 	let seat_id = seat_id?;
 

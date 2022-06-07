@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(card_public_key, door_public_key);
 
-		println!("25a: {}", result);
+		println!("25a: {result}");
 
 		assert_eq!(result, 15467093);
 	}
@@ -16,12 +16,12 @@ fn parse(mut input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>)
 	let line = input.next().ok_or("EOF")?;
 	let line = line?;
 	let line = line.as_ref();
-	let card_public_key = line.parse().map_err(|err| format!("could not parse card public key from {:?}: {}", line, err))?;
+	let card_public_key = line.parse().map_err(|err| format!("could not parse card public key from {line:?}: {err}"))?;
 
 	let line = input.next().ok_or("EOF")?;
 	let line = line?;
 	let line = line.as_ref();
-	let door_public_key = line.parse().map_err(|err| format!("could not parse door public key from {:?}: {}", line, err))?;
+	let door_public_key = line.parse().map_err(|err| format!("could not parse door public key from {line:?}: {err}"))?;
 
 	Ok((card_public_key, door_public_key))
 }

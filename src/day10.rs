@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&adapters)?;
 
-		println!("10a: {}", result);
+		println!("10a: {result}");
 
 		assert_eq!(result, 2310);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&adapters);
 
-		println!("10b: {}", result);
+		println!("10b: {result}");
 
 		assert_eq!(result, 64793042714624);
 	}

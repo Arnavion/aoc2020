@@ -7,7 +7,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = find::<typenum::U2>(&input).ok_or("no solution")?;
 
-		println!("1a: {}", result);
+		println!("1a: {result}");
 
 		assert_eq!(result, 751776);
 	}
@@ -15,7 +15,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = find::<typenum::U3>(&input).ok_or("no solution")?;
 
-		println!("1b: {}", result);
+		println!("1b: {result}");
 
 		assert_eq!(result, 42275090);
 	}
@@ -83,8 +83,6 @@ where
 
 		let mut iter = input.iter();
 
-		// clippy thinks this can be replaced with `for &num in iter`, but that would prevent `iter.as_slice()` from being used in the closure
-		#[allow(clippy::while_let_on_iterator)]
 		while let Some(&num) = iter.next() {
 			if let Some(product) =
 				target.checked_sub(num)

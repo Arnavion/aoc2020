@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 
 		let result: usize = groups.iter().map(std::collections::BTreeSet::len).sum();
 
-		println!("6a: {}", result);
+		println!("6a: {result}");
 
 		assert_eq!(result, 6310);
 	}
@@ -14,7 +14,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 
 		let result: usize = groups.iter().map(std::collections::BTreeSet::len).sum();
 
-		println!("6b: {}", result);
+		println!("6b: {result}");
 
 		assert_eq!(result, 3193);
 	}

@@ -5,7 +5,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 		let (mut player1, mut player2) = (player1.clone(), player2.clone());
 		let result = part1(&mut player1, &mut player2);
 
-		println!("22a: {}", result);
+		println!("22a: {result}");
 
 		assert_eq!(result, 33680);
 	}
@@ -14,7 +14,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 		let (mut player1, mut player2) = (player1, player2);
 		let result = part2(&mut player1, &mut player2);
 
-		println!("22b: {}", result);
+		println!("22b: {result}");
 
 		assert_eq!(result, 33683);
 	}
@@ -38,7 +38,7 @@ fn parse(input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>) ->
 			"" | "Player 1:" => (),
 			"Player 2:" => player = &mut player2,
 			line => {
-				let card = line.parse().map_err(|err| format!("invalid card {:?}: {}", line, err))?;
+				let card = line.parse().map_err(|err| format!("invalid card {line:?}: {err}"))?;
 				player.push_back(card);
 			},
 		}

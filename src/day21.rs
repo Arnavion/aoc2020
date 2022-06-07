@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&recipes, &allergenic_ingredients);
 
-		println!("21a: {}", result);
+		println!("21a: {result}");
 
 		assert_eq!(result, 2542);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&allergenic_ingredients);
 
-		println!("21b: {}", result);
+		println!("21b: {result}");
 
 		assert_eq!(result, "hkflr,ctmcqjf,bfrq,srxphcm,snmxl,zvx,bd,mqvk");
 	}

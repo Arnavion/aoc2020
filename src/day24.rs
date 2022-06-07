@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&black_tiles);
 
-		println!("24a: {}", result);
+		println!("24a: {result}");
 
 		assert_eq!(result, 322);
 	}
@@ -20,7 +20,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&mut black_tiles);
 
-		println!("24b: {}", result);
+		println!("24b: {result}");
 
 		assert_eq!(result, 3831);
 	}
@@ -49,13 +49,13 @@ fn parse(input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>) -> 
 
 		while !line.is_empty() {
 			let (direction, rest) =
-				line.strip_prefix("e").map(|rest| (Direction::East, rest))
+				line.strip_prefix('e').map(|rest| (Direction::East, rest))
 				.or_else(|| line.strip_prefix("ne").map(|rest| (Direction::NorthEast, rest)))
 				.or_else(|| line.strip_prefix("nw").map(|rest| (Direction::NorthWest, rest)))
 				.or_else(|| line.strip_prefix("se").map(|rest| (Direction::SouthEast, rest)))
 				.or_else(|| line.strip_prefix("sw").map(|rest| (Direction::SouthWest, rest)))
-				.or_else(|| line.strip_prefix("w").map(|rest| (Direction::West, rest)))
-				.ok_or_else(|| format!("invalid direction in line {:?}", line))?;
+				.or_else(|| line.strip_prefix('w').map(|rest| (Direction::West, rest)))
+				.ok_or_else(|| format!("invalid direction in line {line:?}"))?;
 
 			match direction {
 				Direction::East => {

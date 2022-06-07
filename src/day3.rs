@@ -6,7 +6,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = down_1_right_3;
 
-		println!("3a: {}", result);
+		println!("3a: {result}");
 
 		assert_eq!(result, 187);
 	}
@@ -19,7 +19,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 
 		let result = down_1_right_1 * down_1_right_3 * down_1_right_5 * down_1_right_7 * down_2_right_1;
 
-		println!("3b: {}", result);
+		println!("3b: {result}");
 
 		assert_eq!(result, 4723283400);
 	}

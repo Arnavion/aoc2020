@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(earliest_departure_timestamp, &bus_ids)?;
 
-		println!("13a: {}", result);
+		println!("13a: {result}");
 
 		assert_eq!(result, 153);
 	}
@@ -13,7 +13,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&bus_ids);
 
-		println!("13b: {}", result);
+		println!("13b: {result}");
 
 		assert_eq!(
 			result,
@@ -32,7 +32,7 @@ fn parse_input(mut input: impl Iterator<Item = Result<impl AsRef<str>, super::Er
 	let earliest_departure_timestamp: usize = {
 		let line = input.next().ok_or("no earliest departure timestamp")??;
 		let line = line.as_ref();
-		line.parse().map_err(|err| format!("could not parse earliest departure timestamp: {}", err))?
+		line.parse().map_err(|err| format!("could not parse earliest departure timestamp: {err}"))?
 	};
 
 	let bus_ids = {
@@ -44,7 +44,7 @@ fn parse_input(mut input: impl Iterator<Item = Result<impl AsRef<str>, super::Er
 				if id == "x" {
 					Ok(None)
 				} else {
-					let id = id.parse().map_err(|err| format!("invalid bus ID {:?}: {}", id, err))?;
+					let id = id.parse().map_err(|err| format!("invalid bus ID {id:?}: {err}"))?;
 					Ok(Some(id))
 				})
 			.collect();

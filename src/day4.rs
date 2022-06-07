@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = passports.iter().filter(|passport| passport.is_valid1()).count();
 
-		println!("4a: {}", result);
+		println!("4a: {result}");
 
 		assert_eq!(result, 216);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = passports.iter().filter(|passport| passport.is_valid2()).count();
 
-		println!("4b: {}", result);
+		println!("4b: {result}");
 
 		assert_eq!(result, 150);
 	}
@@ -50,7 +50,7 @@ impl Passport {
 					let mut parts = field.split(':');
 
 					let key = parts.next().expect("str::split yields at least one part");
-					let value = parts.next().ok_or_else(|| format!("malformed line {:?}", line))?;
+					let value = parts.next().ok_or_else(|| format!("malformed line {line:?}"))?;
 
 					match key {
 						"byr" => passport.byr = Some(value.to_owned()),
@@ -61,7 +61,7 @@ impl Passport {
 						"hgt" => passport.hgt = Some(value.to_owned()),
 						"iyr" => passport.iyr = Some(value.to_owned()),
 						"pid" => passport.pid = Some(value.to_owned()),
-						_ => return Err(format!("malformed line {:?}", line).into()),
+						_ => return Err(format!("malformed line {line:?}").into()),
 					}
 				}
 			}

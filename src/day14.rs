@@ -2,7 +2,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = solve::<Mask1, _, _>(super::read_input_lines::<String>("day14")?)?;
 
-		println!("14a: {}", result);
+		println!("14a: {result}");
 
 		assert_eq!(result, 6317049172545);
 	}
@@ -10,7 +10,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = solve::<Mask2, _, _>(super::read_input_lines::<String>("day14")?)?;
 
-		println!("14b: {}", result);
+		println!("14b: {result}");
 
 		assert_eq!(result, 3434009980379);
 	}
@@ -33,7 +33,7 @@ impl std::convert::TryFrom<char> for MaskBit {
 			'0' => MaskBit::Zero,
 			'1' => MaskBit::One,
 			'X' => MaskBit::X,
-			c => return Err(format!("invalid mask bit {:?}", c)),
+			c => return Err(format!("invalid mask bit {c:?}")),
 		})
 	}
 }
@@ -154,22 +154,22 @@ where
 		let line = line?;
 		let line = line.as_ref();
 
-		if let Some(captures) = MASK_REGEX.captures(&line) {
+		if let Some(captures) = MASK_REGEX.captures(line) {
 			for (i, c) in captures["mask"].chars().enumerate() {
 				mask_bits[i] =
 					std::convert::TryInto::try_into(c)
-					.map_err(|err| format!("input line {:?} has invalid format: {}", line, err))?;
+					.map_err(|err| format!("input line {line:?} has invalid format: {err}"))?;
 			}
 
 			mask = (&mask_bits).into();
 		}
-		else if let Some(captures) = MEM_REGEX.captures(&line) {
-			let address = captures["address"].parse().map_err(|err| format!("input line {:?} has invalid format: {}", line, err))?;
-			let value = captures["value"].parse().map_err(|err| format!("input line {:?} has invalid format: {}", line, err))?;
+		else if let Some(captures) = MEM_REGEX.captures(line) {
+			let address = captures["address"].parse().map_err(|err| format!("input line {line:?} has invalid format: {err}"))?;
+			let value = captures["value"].parse().map_err(|err| format!("input line {line:?} has invalid format: {err}"))?;
 			mask.set(&mut memory, address, value);
 		}
 		else {
-			return Err(format!("input line {:?} has invalid format", line).into());
+			return Err(format!("input line {line:?} has invalid format").into());
 		}
 	}
 

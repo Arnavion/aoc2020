@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(seats.clone(), num_rows, num_cols);
 
-		println!("11a: {}", result);
+		println!("11a: {result}");
 
 		assert_eq!(result, 2361);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(seats, num_rows, num_cols);
 
-		println!("11b: {}", result);
+		println!("11b: {result}");
 
 		assert_eq!(result, 2119);
 	}
@@ -34,7 +34,7 @@ fn parse_seats(input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>
 				'L' => { seats.insert((row, col), Seat::Empty); },
 				'#' => { seats.insert((row, col), Seat::Occupied); },
 				'.' => (),
-				c => return Err(format!("unexpected character {:?}", c).into()),
+				c => return Err(format!("unexpected character {c:?}").into()),
 			}
 		}
 	}

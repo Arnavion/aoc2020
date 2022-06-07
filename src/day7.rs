@@ -4,7 +4,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(&graph, shiny_gold_node_index);
 
-		println!("7a: {}", result);
+		println!("7a: {result}");
 
 		assert_eq!(result, 164);
 	}
@@ -12,7 +12,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(&graph, shiny_gold_node_index);
 
-		println!("7b: {}", result);
+		println!("7b: {result}");
 
 		assert_eq!(result, 7872);
 	}
@@ -47,7 +47,7 @@ fn parse(input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>) ->
 		let line = line?;
 		let line = line.as_ref();
 
-		let captures = LINE_REGEX.captures(line).ok_or_else(|| format!("input line {:?} has invalid format", line))?;
+		let captures = LINE_REGEX.captures(line).ok_or_else(|| format!("input line {line:?} has invalid format"))?;
 
 		let kind = &captures["kind"];
 		let contents = &captures["contents"];
@@ -69,7 +69,7 @@ fn parse(input: impl Iterator<Item = Result<impl AsRef<str>, super::Error>>) ->
 		let contents = contents.split(", ");
 
 		for content in contents {
-			let captures = CONTENT_REGEX.captures(&content).ok_or_else(|| format!("input line {:?} has invalid format", line))?;
+			let captures = CONTENT_REGEX.captures(content).ok_or_else(|| format!("input line {line:?} has invalid format"))?;
 
 			let content_num: usize = captures["num"].parse()?;
 			let content_kind = &captures["kind"];

@@ -9,7 +9,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 			}
 		}
 
-		println!("2a: {}", result);
+		println!("2a: {result}");
 
 		assert_eq!(result, 416);
 	}
@@ -24,7 +24,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 			}
 		}
 
-		println!("2b: {}", result);
+		println!("2b: {result}");
 
 		assert_eq!(result, 688);
 	}
@@ -33,13 +33,13 @@ pub(super) fn run() -> Result<(), super::Error> {
 }
 
 fn check_password1(line: &str) -> Result<bool, super::Error> {
-	let (low, high, c, password) = parse_line(&line)?;
+	let (low, high, c, password) = parse_line(line)?;
 	let num_c = password.chars().filter(|&c_| c_ == c).count();
 	Ok((low..=high).contains(&num_c))
 }
 
 fn check_password2(line: &str) -> Result<bool, super::Error> {
-	let (low, high, c, password) = parse_line(&line)?;
+	let (low, high, c, password) = parse_line(line)?;
 	let low_matches = password.chars().nth(low - 1) == Some(c);
 	let high_matches = password.chars().nth(high - 1) == Some(c);
 	Ok(low_matches ^ high_matches)
@@ -51,7 +51,7 @@ fn parse_line(line: &str) -> Result<(usize, usize, char, &str), super::Error> {
 			regex::Regex::new(r"^(?P<low>\d+)-(?P<high>\d+) (?P<c>[a-z]): (?P<password>[a-z]+)$")
 			.expect("hard-coded regex must compile successfully"));
 
-	let captures = LINE_REGEX.captures(&line).ok_or_else(|| format!("input line {:?} has invalid format", line))?;
+	let captures = LINE_REGEX.captures(line).ok_or_else(|| format!("input line {line:?} has invalid format"))?;
 
 	let low: usize = captures["low"].parse()?;
 	let high: usize = captures["high"].parse()?;

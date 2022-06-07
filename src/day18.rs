@@ -2,7 +2,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part1(super::read_input_lines::<String>("day18")?)?;
 
-		println!("18a: {}", result);
+		println!("18a: {result}");
 
 		assert_eq!(result, 8929569623593);
 	}
@@ -10,7 +10,7 @@ pub(super) fn run() -> Result<(), super::Error> {
 	{
 		let result = part2(super::read_input_lines::<String>("day18")?)?;
 
-		println!("18b: {}", result);
+		println!("18b: {result}");
 
 		assert_eq!(result, 231235959382961);
 	}
@@ -58,12 +58,12 @@ impl Token {
 		s.chars()
 			.filter_map(|c| match c {
 				' ' => None,
-				c @ '0'..='9' => Some(Ok(Token::Num(c as u64 - '0' as u64))),
+				c @ '0'..='9' => Some(Ok(Token::Num(u64::from(c) - u64::from('0')))),
 				'+' => Some(Ok(Token::Plus)),
 				'*' => Some(Ok(Token::Star)),
 				'(' => Some(Ok(Token::ParenOpen)),
 				')' => Some(Ok(Token::ParenClose)),
-				c => Some(Err(format!("unexpected character {:?}", c).into())),
+				c => Some(Err(format!("unexpected character {c:?}").into())),
 			})
 	}
 }
@@ -100,13 +100,11 @@ fn evaluate(tokens: &mut impl Iterator<Item = Result<Token, super::Error>>, add_
 
 			(State::Num(num), Some(Token::Plus)) => State::Add(num),
 			(State::Num(num), Some(Token::Star)) => State::Mul(num),
-			(State::Num(num), Some(Token::ParenClose)) |
-			(State::Num(num), None) => return Ok(num),
+			(State::Num(num), Some(Token::ParenClose) | None) => return Ok(num),
 
 			(State::ProductNum(num1, num2), Some(Token::Plus)) => State::MulAdd(num1, num2),
 			(State::ProductNum(num1, num2), Some(Token::Star)) => State::Mul(num1 * num2),
-			(State::ProductNum(num1, num2), Some(Token::ParenClose)) |
-			(State::ProductNum(num1, num2), None) => return Ok(num1 * num2),
+			(State::ProductNum(num1, num2), Some(Token::ParenClose) | None) => return Ok(num1 * num2),
 
 			(State::Add(num1), Some(Token::Num(num2))) => State::Num(num1 + num2),
 			(State::Add(num), Some(Token::ParenOpen)) => State::Num(num + evaluate(&mut *tokens, add_has_precedence)?),
@@ -120,7 +118,7 @@ fn evaluate(tokens: &mut impl Iterator<Item = Result<Token, super::Error>>, add_
 			(State::MulAdd(num1, num2), Some(Token::Num(num3))) => State::ProductNum(num1, num2 + num3),
 			(State::MulAdd(num1, num2), Some(Token::ParenOpen)) => State::ProductNum(num1, num2 + evaluate(&mut *tokens, add_has_precedence)?),
 
-			(state, Some(c)) => return Err(format!("unexpected char {:?} in state {:?}", c, state).into()),
+			(state, Some(c)) => return Err(format!("unexpected char {c:?} in state {state:?}").into()),
 
 			(_, None) => return Err("EOF".into()),
 		};
